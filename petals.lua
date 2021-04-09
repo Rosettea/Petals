@@ -5,12 +5,13 @@ local commander = require 'commander'
 local fs = require 'fs'
 
 local petals = {}
-plugtable = {
+local plugtable = {
 	notinstalled = {},
 	notstarted = {},
 	started = {}
 }
 
+petals.ver = '0.0.2'
 -- Init adds the `petals` command for plugin management in interactive mode
 petals.init = function()
 	commander.register('petals', function(args)
@@ -20,10 +21,17 @@ petals.init = function()
 		end
 
 		local cmd = args[1]
-		if cmd == 'install' then
+		if cmd == 'help' then
+			print(help)
+		elseif cmd == 'install' then
 			for p, props in pairs(plugtable.notinstalled) do
 				petals.install(p)
 			end
+		elseif cmd == 'version' then
+			print(petals.ver)
+		else
+			print 'unknown command'
+			print 'run "petals help" for commands and usage'
 		end
 	end)
 end
@@ -93,7 +101,9 @@ Usage: petals <command>
 Hilbish plugin manager.
 
 Available commands:
-	install - Installs loaded plugins that aren't installed
+	help     -  This help page
+	install  -  Installs loaded plugins that aren't installed
+	version  -  Prints the version of Petals
 ]]
 
 return petals
