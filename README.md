@@ -1,10 +1,9 @@
 # Petals
 > *The* plugin manager for Hilbish.
 
-Petals is the official Hilbish plugin manager. It's inspired by
-vim-plug, zplug and packer.nvim, exposes both an API to
-load plugins and start them and the single `petals` command to more
-easily manage them interactively.
+Petals is the official Hilbish plugin manager. It exposes both an API to
+load plugins and start them and the single `petals` command to
+manage them interactively.
 
 Petals is not in a stable state (like Hilbish) so use with caution!
 
