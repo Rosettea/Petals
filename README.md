@@ -28,7 +28,7 @@ petals.init()
 
 Then load your plugins:
 ```lua
-petals.load 'Hilbis/SamplePetal'
+petals.load 'Hilbis/sample.petal'
 ```
 
 In interactive mode (the shell),  
