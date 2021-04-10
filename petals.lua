@@ -3,6 +3,7 @@
 -- excuse: its in alpha :^)
 local commander = require 'commander'
 local fs = require 'fs'
+local utils = require 'petals.utils'
 
 local petals = {}
 local plugtable = {
@@ -11,7 +12,7 @@ local plugtable = {
 	started = {}
 }
 
-petals.ver = '0.0.2'
+petals.ver = '0.0.3'
 -- Init adds the `petals` command for plugin management in interactive mode
 petals.init = function()
 	commander.register('petals', function(args)
@@ -25,7 +26,13 @@ petals.init = function()
 			print(help)
 		elseif cmd == 'install' then
 			for p, props in pairs(plugtable.notinstalled) do
-				petals.install(p)
+				local ok, code, msg = petals.install(p)
+				if ok then 
+					print('✔️ Successfully installed ' .. p .. '!')
+				else
+					print('✖️ Unsuccessfully installed ' .. p .. '.\n'
+					.. 'Reason: ' .. msg)
+				end
 			end
 		elseif cmd == 'version' then
 			print(petals.ver)
@@ -50,49 +57,22 @@ end
 
 -- Installs a single plugin
 petals.install = function(plugurl)
-	local ok = clone(plugurl)
-	if not ok then error 'not found' end
+	local ok = utils.clone(plugurl)
+	if not ok then return false, 1, 'repository not found' end
 	
 	plugtable.notinstalled[plugurl] = nil
 	plugtable.notstarted[plugurl] = getmanifest(plugurl)
-	
-	print('Successfully installed ' .. plugurl .. '!')
+
+	return true, 0, success
 end
 
 -- Actually starts up our plugins
 petals.start = function()
 	for p, props in pairs(plugtable.notstarted) do
-		dofile(expand '~/.local/share/hilbish/petals/start/' .. p .. '/src/plugin.lua')
+		dofile(utils.expand '~/.local/share/hilbish/petals/start/' .. p .. '/src/plugin.lua')
 		plugtable.notstarted[p] = nil
 		plugtable.started[props.name] = props
 	end
-end
-
-function getmanifest(plugurl)
-	manifile = io.open(expand '~/.local/share/hilbish/petals/start/' .. plugurl .. '/package.lua')
-	manifest = manifile:read('*all')
-	manifile:close()
-
-	props = loadstring(manifest)
-	return props()
-end
-
-function clone(url)
-	local cmd = 'git clone https://github.com/' .. url .. expand(' ~/.local/share/hilbish/petals/start/') .. url .. ' > /dev/null 2>&1'
-	local code = os.execute(cmd)
-
-	return true, code == 0
-end
-
-function plugexists(url)
-	local plugfolder = expand '~/.local/share/hilbish/petals/start/' .. url
-	local exists = fs.stat(plugfolder)
-
-	return exists
-end
-
-function expand(path)
-	return string.gsub(path, '~', os.getenv 'HOME', 1)
 end
 
 help = string.format [[
