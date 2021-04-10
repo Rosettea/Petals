@@ -32,11 +32,11 @@ petals.load 'Hilbis/SamplePetal'
 ```
 
 In interactive mode (the shell),  
-Install them with the `petals install`,  
-and `petals.start()`!
+1. Install them with the `petals install`
+2. and `petals.start()`!
 
 ## Notes
-- Petals is inspired by vim plugin managers
+- Petals is inspired by vim plugin managers,
 namely [vim-plug](https://github.com/junegunn/vim-plug) and
 [packer.nvim](https://github.com/wbthomason/packer.nvim)
 - Also by [zplug](https://github.com/zplug/zplug)
