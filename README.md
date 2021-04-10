@@ -8,13 +8,12 @@ manage them interactively.
 Petals is not in a stable state (like Hilbish) so use with caution!
 
 ## Requirements
-- Hilbish `master` branch
-> Petals uses new functions from the `fs` library that aren't in the
+- Hilbish `v0.3.21
 latest release.
 
 ## Installation
 Clone this repository to one of the paths Hilbish looks for libaries at.
-A good, standard path is `.local/share/hilbish/libs`:  
+A good, standard path is `~/.local/share/hilbish/libs`:  
 ```
 git clone https://github.com/Hilbis/Petals ~/.local/share/hilbish/libs/petals
 ```
