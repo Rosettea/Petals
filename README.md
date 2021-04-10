@@ -32,7 +32,7 @@ petals.load 'Hilbis/SamplePetal'
 ```
 
 In interactive mode (the shell),  
-1. Install them with the `petals install`
+1. Install them with the `petals install` command
 2. and `petals.start()`!
 
 ## Notes
