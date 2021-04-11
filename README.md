@@ -8,8 +8,7 @@ manage them interactively.
 Petals is not in a stable state (like Hilbish) so use with caution!
 
 ## Requirements
-- Hilbish `v0.3.21
-latest release.
+- Hilbish `master` branch
 
 ## Installation
 Clone this repository to one of the paths Hilbish looks for libaries at.
