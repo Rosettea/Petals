@@ -61,7 +61,7 @@ petals.install = function(plugurl)
 	if not ok then return false, 1, 'repository not found' end
 	
 	plugtable.notinstalled[plugurl] = nil
-	plugtable.notstarted[plugurl] = getmanifest(plugurl)
+	plugtable.notstarted[plugurl] = utils.getmanifest(plugurl)
 
 	return true, 0, success
 end
