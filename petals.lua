@@ -26,7 +26,7 @@ petals.init = function()
 			print(help)
 		elseif cmd == 'install' then
 			for p, props in pairs(plugtable.notinstalled) do
-				local ok, code, msg = petals.install(p)
+				local ok, code, msg = petals.install(p, props)
 
 				if ok then 
 					print('✔️ Successfully installed ' .. p .. '!')
@@ -58,7 +58,12 @@ end
 
 -- Installs a single plugin
 petals.install = function(plugurl, opts)
-	path = utils.expand '~/.local/share/hilbish/petals/start/' .. plugurl
+	local path = {}
+	if opts.module then
+		path = utils.expand '~/.local/share/hilbish/libs/' .. plugurl
+	else
+		path = utils.expand '~/.local/share/hilbish/petals/start/' .. plugurl
+	end
 
 	local ok = utils.clone(plugurl, path)
 	if not ok then return false, 1, 'repository not found' end
@@ -78,7 +83,7 @@ petals.start = function()
 	end
 end
 
-help = string.format [[
+local help = string.format [[
 Usage: petals <command>
 
 Hilbish plugin manager.
