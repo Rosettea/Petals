@@ -5,10 +5,9 @@ utils.expand = function(path)
 	return path:gsub('~', os.getenv 'HOME')
 end
 
-utils.clone = function(url)
+utils.clone = function(url, path)
 	local cmd = io.popen('git clone https://github.com/' .. url
-	.. utils.expand ' ~/.local/share/hilbish/petals/start/'
-	.. url .. ' 2>&1')
+	..  ' ' .. path .. ' 2>&1')
 
 	local output = cmd:read '*all'
 	cmd:close()
@@ -37,25 +36,6 @@ utils.getmanifest = function (plugurl)
 
 	props = loadstring(manifest)
 	return props()
-end
-
--- https://gist.github.com/jaredallard/ddb152179831dd23b230
--- TODO: move to hilbish's preload.lua
-function string.split(str, delimiter)
-	local result = {}
-	local from = 1
-	
-	local delim_from, delim_to = string.find(str, delimiter, from)
-	
-	while delim_from do
-		table.insert(result, string.sub(str, from, delim_from - 1))
-		from = delim_to + 1
-		delim_from, delim_to = string.find(str, delimiter, from)
-	end
-	
-	table.insert(result, string.sub(str, from))
-
-	return result
 end
 
 function string.startsWith(str, start)
