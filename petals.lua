@@ -45,11 +45,18 @@ petals.init = function()
 end
 
 -- Loads plugins
-petals.load = function(plugurl)
+petals.load = function(plug)
+	local plugurl = plug
+	local manifest = {}
+
+	if type(plug) == 'table' then
+		plugurl = plug[1]
+		manifest = plug
+	end
 	local exists = utils.exists(plugurl)
 
 	if not exists then
-		plugtable.notinstalled[plugurl] = {}
+		plugtable.notinstalled[plugurl] = manifest
 	else
 		manifest = utils.getmanifest(plugurl)
 		plugtable.notstarted[plugurl] = manifest
