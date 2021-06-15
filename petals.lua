@@ -53,21 +53,25 @@ petals.load = function(plug)
 		plugurl = plug[1]
 		manifest = plug
 	end
-	local exists = utils.exists(plugurl)
+	local exists = utils.exists(plugurl, manifest.module)
 
 	if not exists then
 		plugtable.notinstalled[plugurl] = manifest
 	else
-		manifest = utils.getmanifest(plugurl)
-		plugtable.notstarted[plugurl] = manifest
+		if manifest.module then
+			utils.addPackage(plugurl)
+		else
+			manifest = utils.getmanifest(plugurl)
+			plugtable.notstarted[plugurl] = manifest
+		end
 	end
 end
 
 -- Installs a single plugin
 petals.install = function(plugurl, opts)
-	local path = {}
+	local path = ''
 	if opts.module then
-		path = utils.expand '~/.local/share/hilbish/libs/' .. plugurl
+		path = utils.expand '~/.local/share/hilbish/petals/libs/' .. plugurl
 	else
 		path = utils.expand '~/.local/share/hilbish/petals/start/' .. plugurl
 	end
@@ -76,7 +80,7 @@ petals.install = function(plugurl, opts)
 	if not ok then return false, 1, 'repository not found' end
 	
 	plugtable.notinstalled[plugurl] = nil
-	plugtable.notstarted[plugurl] = utils.getmanifest(plugurl)
+	plugtable.notstarted[plugurl] = utils.getmanifest(path)
 
 	return true, 0, success
 end

@@ -18,18 +18,17 @@ utils.clone = function(url, path)
 	return not res:startsWith 'fatal: repository'
 end
 
-utils.exists = function(url)
-	local plugfolder = utils.expand('~/.local/share/hilbish/petals/start/'
-	.. url)
+utils.exists = function(url, module)
+	local plugfolder = utils.expand('~/.local/share/hilbish/petals/' .. (module and 'libs' or 'start')
+	.. '/' .. url)
 
 	local exists = fs.stat(plugfolder)
 
 	return exists
 end
 
-utils.getmanifest = function (plugurl)
-	manifile = io.open(utils.expand '~/.local/share/hilbish/petals/start/' 
-	.. plugurl .. '/package.lua')
+utils.getmanifest = function (path)
+	manifile = io.open(path .. '/package.lua')
 
 	manifest = manifile:read '*all'
 	manifile:close()
@@ -40,6 +39,10 @@ end
 
 function string.startsWith(str, start)
    return string.sub(str, 1, string.len(start)) == start
+end
+
+function utils.addPackage(plugurl)
+	package.path = package.path .. ';' .. utils.expand('~/.local/share/hilbish/petals/libs/' .. plugurl .. '/?.lua')
 end
 
 return utils
